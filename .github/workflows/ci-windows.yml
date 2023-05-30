@@ -36,3 +36,34 @@ jobs:
 
       - name: Run tests
         run: cd cmakebuild && ls && ctest -C Release
+
+  cmakebuild-mingw64:
+    name: Build for Windows - MSYS2
+    runs-on: windows-latest
+
+    defaults:
+      run:
+        shell: msys2 {0}
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v3
+
+      - name: Set up MSYS2 environment
+        uses: msys2/setup-msys2@v2
+        with:
+          install: git make mingw-w64-x86_64-gcc ninja mingw-w64-x86_64-cmake
+          env: MSYSTEM=MINGW64
+
+      - name: Fetch MS.WebView2 package
+        run: ./fetch-mswebview.sh
+        shell: bash
+
+      - name: Configure build process
+        run: cmake -S . -B cmakebuild -G Ninja
+
+      - name: Build all targets
+        run: cmake --build cmakebuild
+
+      - name: Run tests
+        run: cd cmakebuild && ls && ctest
