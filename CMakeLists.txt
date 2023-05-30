@@ -44,7 +44,10 @@ else()
 	target_link_libraries(webview PUBLIC ${GTK3_LIBRARIES} ${WEBKIT2GTK4_LIBRARIES})
 endif()
 
-target_include_directories(webview PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(webview PUBLIC
+	${CMAKE_CURRENT_SOURCE_DIR}/src/common
+	${CMAKE_CURRENT_SOURCE_DIR}/include
+)
 
 add_executable(basic_c WIN32 examples/basic.c)
 add_executable(basic_cpp WIN32 examples/basic.cc)
