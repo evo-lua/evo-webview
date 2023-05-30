@@ -1,0 +1,34 @@
+name: Build and Release (Mac OS)
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+  create:
+    # Any branch or tag
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  cmakebuild-macos:
+    name: Build for Mac OS
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Configure build process
+        run: cmake -S . -B cmakebuild
+
+      - name: Build all targets
+        run: cmake --build cmakebuild
+
+      - name: Run tests
+        run: cd cmakebuild && ls && ctest
