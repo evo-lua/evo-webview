@@ -24,7 +24,10 @@ endif()
 add_library(webview STATIC ${CROSSPLATFORM_SOURCES} ${WINDOWS_SOURCES} ${OSX_SOURCES} ${LINUX_SOURCES})
 
 if(WIN32)
-	target_include_directories(webview PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+	target_include_directories(webview PUBLIC
+		${CMAKE_CURRENT_SOURCE_DIR}
+		${CMAKE_CURRENT_SOURCE_DIR}/src/windows
+	)
 	target_link_libraries(webview PUBLIC advapi32 ole32 shell32 shlwapi user32 version)
 elseif(APPLE)
 	target_link_libraries(webview PUBLIC "-framework WebKit")
