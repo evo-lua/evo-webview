@@ -498,7 +498,7 @@ inline std::string json_parse(const std::string &s, const std::string &key,
 
 #elif defined(WEBVIEW_COCOA)
 
-#include "webview_cocoa.h"
+#include "webview_cocoa.mm"
 
 #elif defined(WEBVIEW_EDGE)
 
