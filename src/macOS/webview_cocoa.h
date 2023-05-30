@@ -8,6 +8,8 @@
 // ====================================================================
 //
 
+#include <AppKit/AppKit.h>
+#include <WebKit/WebKit.h>
 #include <CoreGraphics/CoreGraphics.h>
 #include <objc/NSObjCRuntime.h>
 #include <objc/objc-runtime.h>
@@ -33,25 +35,6 @@ Result msg_send(Args... args) noexcept {
 }
 
 } // namespace objc
-
-enum NSBackingStoreType : NSUInteger { NSBackingStoreBuffered = 2 };
-
-enum NSWindowStyleMask : NSUInteger {
-  NSWindowStyleMaskTitled = 1,
-  NSWindowStyleMaskClosable = 2,
-  NSWindowStyleMaskMiniaturizable = 4,
-  NSWindowStyleMaskResizable = 8
-};
-
-enum NSApplicationActivationPolicy : NSInteger {
-  NSApplicationActivationPolicyRegular = 0
-};
-
-enum WKUserScriptInjectionTime : NSInteger {
-  WKUserScriptInjectionTimeAtDocumentStart = 0
-};
-
-enum NSModalResponse : NSInteger { NSModalResponseOK = 1 };
 
 // Convenient conversion of string literals.
 inline id operator"" _cls(const char *s, std::size_t) {
