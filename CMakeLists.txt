@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-set(CROSSPLATFORM_SOURCES "webview.cc")
+set(CROSSPLATFORM_SOURCES "src/common/webview.cc")
 
 if(WIN32)
 	set(WINDOWS_SOURCES ${WINDOWS_SOURCES}
@@ -24,19 +24,30 @@ endif()
 add_library(webview STATIC ${CROSSPLATFORM_SOURCES} ${WINDOWS_SOURCES} ${OSX_SOURCES} ${LINUX_SOURCES})
 
 if(WIN32)
-	target_include_directories(webview PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+	target_include_directories(webview PUBLIC
+		${CMAKE_CURRENT_SOURCE_DIR}
+		${CMAKE_CURRENT_SOURCE_DIR}/src/windows
+	)
 	target_link_libraries(webview PUBLIC advapi32 ole32 shell32 shlwapi user32 version)
 elseif(APPLE)
+	target_include_directories(webview PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/macOS)
 	target_link_libraries(webview PUBLIC "-framework WebKit")
 else()
 	find_package(PkgConfig REQUIRED)
 	pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
 	pkg_check_modules(WEBKIT2GTK4 REQUIRED webkit2gtk-4.0)
-	target_include_directories(webview PUBLIC ${GTK3_INCLUDE_DIRS} ${WEBKIT2GTK4_INCLUDE_DIRS})
+	target_include_directories(webview PUBLIC
+		${GTK3_INCLUDE_DIRS}
+		${WEBKIT2GTK4_INCLUDE_DIRS}
+		${CMAKE_CURRENT_SOURCE_DIR}/src/linux
+	)
 	target_link_libraries(webview PUBLIC ${GTK3_LIBRARIES} ${WEBKIT2GTK4_LIBRARIES})
 endif()
 
-target_include_directories(webview PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(webview PUBLIC
+	${CMAKE_CURRENT_SOURCE_DIR}/src/common
+	${CMAKE_CURRENT_SOURCE_DIR}/include
+)
 
 add_executable(basic_c WIN32 examples/basic.c)
 add_executable(basic_cpp WIN32 examples/basic.cc)
