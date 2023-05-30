@@ -1,0 +1,37 @@
+name: Build and Release (Linux)
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+  create:
+    # Any branch or tag
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  cmakebuild-linux:
+    name: Build for Linux
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install libwebkit2gtk-4.0-dev xvfb -y
+
+      - name: Configure build process
+        run: cmake -S . -B cmakebuild
+
+      - name: Build all targets
+        run: cmake --build cmakebuild
+
+      - name: Run tests
+        run: cd cmakebuild && xvfb-run ctest

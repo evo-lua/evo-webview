@@ -1,0 +1,33 @@
+name: Autoformat
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+  create:
+    # Any branch or tag
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  clang-format:
+    name: Enforce consistent formatting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Run clang-format
+        uses: DoozyX/clang-format-lint-action@v0.6
+        with:
+          source: '.'
+          extensions: 'h,cc,cpp,c,hpp,mm,m'
+          clangFormatVersion: 9
+          style: file
