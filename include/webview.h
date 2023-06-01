@@ -230,14 +230,7 @@ namespace webview {
 
 using dispatch_fn_t = std::function<void()>;
 
-namespace detail {
-
-// The library's version information.
-constexpr const webview_version_info_t library_version_info{
-    {WEBVIEW_VERSION_MAJOR, WEBVIEW_VERSION_MINOR, WEBVIEW_VERSION_PATCH},
-    WEBVIEW_VERSION_NUMBER,
-    WEBVIEW_VERSION_PRE_RELEASE,
-    WEBVIEW_VERSION_BUILD_METADATA};
+namespace json {
 
 inline int json_parse_c(const char *s, size_t sz, const char *key, size_t keysz,
                         const char **value, size_t *valuesz) {
@@ -467,28 +460,28 @@ inline std::string json_parse(const std::string &s, const std::string &key,
   return "";
 }
 
-} // namespace detail
+} // namespace json
 
 WEBVIEW_DEPRECATED_PRIVATE
 inline int json_parse_c(const char *s, size_t sz, const char *key, size_t keysz,
                         const char **value, size_t *valuesz) {
-  return detail::json_parse_c(s, sz, key, keysz, value, valuesz);
+  return json::json_parse_c(s, sz, key, keysz, value, valuesz);
 }
 
 WEBVIEW_DEPRECATED_PRIVATE
 inline std::string json_escape(const std::string &s) {
-  return detail::json_escape(s);
+  return json::json_escape(s);
 }
 
 WEBVIEW_DEPRECATED_PRIVATE
 inline int json_unescape(const char *s, size_t n, char *out) {
-  return detail::json_unescape(s, n, out);
+  return json::json_unescape(s, n, out);
 }
 
 WEBVIEW_DEPRECATED_PRIVATE
 inline std::string json_parse(const std::string &s, const std::string &key,
                               const int index) {
-  return detail::json_parse(s, key, index);
+  return json::json_parse(s, key, index);
 }
 
 } // namespace webview

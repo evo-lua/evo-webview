@@ -221,7 +221,7 @@ static void test_bidir_comms() {
 // TEST: ensure that JSON parsing works.
 // =================================================================
 static void test_json() {
-  auto J = webview::detail::json_parse;
+  auto J = webview::json::json_parse;
   // Valid input with expected output
   assert(J(R"({"foo":"bar"})", "foo", -1) == "bar");
   assert(J(R"({"foo":""})", "foo", -1).empty());

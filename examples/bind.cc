@@ -55,8 +55,8 @@ int main() {
           std::this_thread::sleep_for(std::chrono::seconds(1));
           // json_parse() is an implementation detail and is only used here
           // to provide a working example.
-          auto left = std::stoll(webview::detail::json_parse(req, "", 0));
-          auto right = std::stoll(webview::detail::json_parse(req, "", 1));
+          auto left = std::stoll(webview::json::json_parse(req, "", 0));
+          auto right = std::stoll(webview::json::json_parse(req, "", 1));
           auto result = std::to_string(left * right);
           w.resolve(seq, 0, result);
         }).detach();
