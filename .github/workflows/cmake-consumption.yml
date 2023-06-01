@@ -1,0 +1,32 @@
+name: CMake Consumption
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+  create:
+    # Any branch or tag
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  cmake-integration:
+    name: Test CMake integration
+    # Since the build process is tested separately for all platforms, just use the fastest one here to save minutes
+    # It's hard to tell which one this is, but Windows runners are generally slow and Linux needs apt install (for webkit/gtk)
+    runs-on: macos-latest # Probably the fastest?
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v3
+
+      - name: Run CMake integration test
+        run: ./test-cmake-inclusion.sh
