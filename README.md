@@ -38,3 +38,9 @@ cd cmakebuild && ctest
 ```
 
 When in doubt, check the [Build Workflows](https://github.com/evo-lua/evo-webview/tree/main/.github/workflows). They are the only authoritative way of building the library as far as I'm concerned, as they're run on every Pull Request.
+
+---
+
+Here's an example showing how the library can be included in your CMake project:
+
+* [Tests/Fixtures/WebViewTestApp/CMakeLists.txt](Tests/Fixtures/WebViewTestApp/CMakeLists.txt)
