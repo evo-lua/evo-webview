@@ -213,47 +213,6 @@ WEBVIEW_API const webview_version_info_t *webview_version();
 
 #include "json_utils.hpp"
 
-namespace webview {
-
-#ifndef WEBVIEW_DEPRECATED
-#if __cplusplus >= 201402L
-#define WEBVIEW_DEPRECATED(reason) [[deprecated(reason)]]
-#elif defined(_MSC_VER)
-#define WEBVIEW_DEPRECATED(reason) __declspec(deprecated(reason))
-#else
-#define WEBVIEW_DEPRECATED(reason) __attribute__((deprecated(reason)))
-#endif
-#endif
-
-#ifndef WEBVIEW_DEPRECATED_PRIVATE
-#define WEBVIEW_DEPRECATED_PRIVATE                                             \
-  WEBVIEW_DEPRECATED("Private API should not be used")
-#endif
-
-WEBVIEW_DEPRECATED_PRIVATE
-inline int json_parse_c(const char *s, size_t sz, const char *key, size_t keysz,
-                        const char **value, size_t *valuesz) {
-  return json::json_parse_c(s, sz, key, keysz, value, valuesz);
-}
-
-WEBVIEW_DEPRECATED_PRIVATE
-inline std::string json_escape(const std::string &s) {
-  return json::json_escape(s);
-}
-
-WEBVIEW_DEPRECATED_PRIVATE
-inline int json_unescape(const char *s, size_t n, char *out) {
-  return json::json_unescape(s, n, out);
-}
-
-WEBVIEW_DEPRECATED_PRIVATE
-inline std::string json_parse(const std::string &s, const std::string &key,
-                              const int index) {
-  return json::json_parse(s, key, index);
-}
-
-} // namespace webview
-
 #if defined(WEBVIEW_GTK)
 #include "webview_gtk.h"
 
