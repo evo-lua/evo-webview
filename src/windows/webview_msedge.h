@@ -24,7 +24,10 @@
 #pragma comment(lib, "version.lib")
 #endif
 
+#include <functional>
+
 namespace webview {
+using dispatch_fn_t = std::function<void()>;
 namespace detail {
 
 using msg_cb_t = std::function<void(const std::string)>;

@@ -12,7 +12,10 @@
 #include <objc/NSObjCRuntime.h>
 #include <objc/objc-runtime.h>
 
+#include <functional>
+
 namespace webview {
+using dispatch_fn_t = std::function<void()>;
 namespace detail {
 namespace objc {
 

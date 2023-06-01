@@ -13,7 +13,10 @@
 #include <gtk/gtk.h>
 #include <webkit2/webkit2.h>
 
+#include <functional>
+
 namespace webview {
+using dispatch_fn_t = std::function<void()>;
 namespace detail {
 
 class gtk_webkit_engine {
