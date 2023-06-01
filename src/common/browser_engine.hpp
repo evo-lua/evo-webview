@@ -85,9 +85,9 @@ public:
 
 private:
   void on_message(const std::string &msg) {
-    auto seq = detail::json_parse(msg, "id", 0);
-    auto name = detail::json_parse(msg, "method", 0);
-    auto args = detail::json_parse(msg, "params", 0);
+    auto seq = json::json_parse(msg, "id", 0);
+    auto name = json::json_parse(msg, "method", 0);
+    auto args = json::json_parse(msg, "params", 0);
     auto found = bindings.find(name);
     if (found == bindings.end()) {
       return;

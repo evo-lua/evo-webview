@@ -74,6 +74,13 @@ WEBVIEW_API void webview_return(webview_t w, const char *seq, int status,
   static_cast<webview::webview *>(w)->resolve(seq, status, result);
 }
 
+// The library's version information.
+constexpr const webview_version_info_t library_version_info{
+    {WEBVIEW_VERSION_MAJOR, WEBVIEW_VERSION_MINOR, WEBVIEW_VERSION_PATCH},
+    WEBVIEW_VERSION_NUMBER,
+    WEBVIEW_VERSION_PRE_RELEASE,
+    WEBVIEW_VERSION_BUILD_METADATA};
+
 WEBVIEW_API const webview_version_info_t *webview_version() {
-  return &webview::detail::library_version_info;
+  return &library_version_info;
 }
