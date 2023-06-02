@@ -34,22 +34,6 @@ using msg_cb_t = std::function<void(const std::string)>;
 
 #include "mswebview_engine.hpp"
 
-namespace mswebview2 {
-static constexpr IID
-    IID_ICoreWebView2CreateCoreWebView2ControllerCompletedHandler{
-        0x6C4819F3, 0xC9B7, 0x4260, 0x81, 0x27, 0xC9,
-        0xF5,       0xBD,   0xE7,   0xF6, 0x8C};
-static constexpr IID
-    IID_ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler{
-        0x4E8A3389, 0xC9D8, 0x4BD2, 0xB6, 0xB5, 0x12,
-        0x4F,       0xEE,   0x6C,   0xC1, 0x4D};
-static constexpr IID IID_ICoreWebView2PermissionRequestedEventHandler{
-    0x15E1C6A3, 0xC72A, 0x4DF3, 0x91, 0xD7, 0xD0, 0x97, 0xFB, 0xEC, 0x6B, 0xFD};
-static constexpr IID IID_ICoreWebView2WebMessageReceivedEventHandler{
-    0x57213F19, 0x00E6, 0x49FA, 0x8E, 0x07, 0x89, 0x8E, 0xA0, 0x1E, 0xCB, 0xD2};
-
-} // namespace mswebview2
-
 } // namespace webview
 
 #include "webview2_loader/loader.hpp"
