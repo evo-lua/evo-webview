@@ -312,6 +312,8 @@ static void test_parse_version() {
 // =================================================================
 static void test_win32_narrow_wide_string_conversion() {
   using namespace webview::detail;
+  using namespace webview::wstring;
+
   assert(widen_string("").empty());
   assert(narrow_string(L"").empty());
   assert(widen_string("foo") == L"foo");

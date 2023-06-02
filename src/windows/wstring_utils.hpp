@@ -1,5 +1,8 @@
 #pragma once
 
+namespace webview {
+namespace wstring {
+
 // Converts a narrow (UTF-8-encoded) string into a wide (UTF-16-encoded) string.
 inline std::wstring widen_string(const std::string &input) {
   if (input.empty()) {
@@ -43,3 +46,6 @@ inline std::string narrow_string(const std::wstring &input) {
   // Failed to convert string from UTF-16 to UTF-8
   return std::string();
 }
+
+} // namespace wstring
+} // namespace webview

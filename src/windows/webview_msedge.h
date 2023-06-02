@@ -676,7 +676,7 @@ public:
       ICoreWebView2 *sender, ICoreWebView2WebMessageReceivedEventArgs *args) {
     LPWSTR message;
     args->TryGetWebMessageAsString(&message);
-    m_msgCb(narrow_string(message));
+    m_msgCb(webview::wstring::narrow_string(message));
     sender->PostWebMessageAsString(message);
 
     CoTaskMemFree(message);
@@ -874,7 +874,7 @@ public:
   }
 
   void set_title(const std::string &title) {
-    SetWindowTextW(m_window, widen_string(title).c_str());
+    SetWindowTextW(m_window, webview::wstring::widen_string(title).c_str());
   }
 
   void set_size(int width, int height, int hints) {
@@ -906,22 +906,22 @@ public:
   }
 
   void navigate(const std::string &url) {
-    auto wurl = widen_string(url);
+    auto wurl = webview::wstring::widen_string(url);
     m_webview->Navigate(wurl.c_str());
   }
 
   void init(const std::string &js) {
-    auto wjs = widen_string(js);
+    auto wjs = webview::wstring::widen_string(js);
     m_webview->AddScriptToExecuteOnDocumentCreated(wjs.c_str(), nullptr);
   }
 
   void eval(const std::string &js) {
-    auto wjs = widen_string(js);
+    auto wjs = webview::wstring::widen_string(js);
     m_webview->ExecuteScript(wjs.c_str(), nullptr);
   }
 
   void set_html(const std::string &html) {
-    m_webview->NavigateToString(widen_string(html).c_str());
+    m_webview->NavigateToString(webview::wstring::widen_string(html).c_str());
   }
 
 private:
