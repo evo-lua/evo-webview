@@ -278,7 +278,7 @@ static void run_with_timeout(std::function<void()> fn, int timeout_ms) {
 // TEST: ensure that version number parsing works on Windows.
 // =================================================================
 static void test_parse_version() {
-  using namespace webview;
+  using namespace webview::webview2_loader;
   auto v = parse_version("");
   assert(v.size() == 4);
   assert(v[0] == 0 && v[1] == 0 && v[2] == 0 && v[3] == 0);
