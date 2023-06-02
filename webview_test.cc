@@ -9,10 +9,12 @@
 
 #include "webview.h"
 
+#include <atomic>
 #include <cassert>
 #include <cstdint>
 #include <cstring>
 #include <iostream>
+#include <functional>
 #include <thread>
 #include <unordered_map>
 
@@ -274,6 +276,9 @@ static void run_with_timeout(std::function<void()> fn, int timeout_ms) {
 }
 
 #if _WIN32
+
+#include "wstring_utils.hpp"
+
 // =================================================================
 // TEST: ensure that version number parsing works on Windows.
 // =================================================================

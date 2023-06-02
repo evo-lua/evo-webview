@@ -29,6 +29,9 @@ constexpr const auto html =
 </script>)html";
 
 #ifdef _WIN32
+
+#include <windows.h>
+
 int WINAPI WinMain(HINSTANCE hInt, HINSTANCE hPrevInst, LPSTR lpCmdLine,
                    int nCmdShow) {
 #else

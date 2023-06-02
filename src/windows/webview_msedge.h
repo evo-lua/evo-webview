@@ -1,3 +1,5 @@
+#pragma once
+
 //
 // ====================================================================
 //
@@ -25,6 +27,7 @@
 #endif
 
 #include <functional>
+#include "webview.h"
 #include "wstring_utils.hpp"
 
 namespace webview {
