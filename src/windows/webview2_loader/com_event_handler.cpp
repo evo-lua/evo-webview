@@ -1,18 +1,16 @@
-#include "com_interface_handler.hpp"
+#include "com_event_handler.hpp"
 #include "wstring_utils.hpp"
 
 namespace webview {
 namespace webview2_loader {
 
-com_interface_handler::com_interface_handler(HWND hwnd, msg_cb_t msgCb,
-                                             com_interface_handler_cb_t cb)
+com_event_handler::com_event_handler(HWND hwnd, msg_cb_t msgCb,
+                                     com_interface_handler_cb_t cb)
     : m_window(hwnd), m_msgCb(msgCb), m_cb(cb) {}
 
-ULONG STDMETHODCALLTYPE com_interface_handler::AddRef() {
-  return ++m_ref_count;
-}
+ULONG STDMETHODCALLTYPE com_event_handler::AddRef() { return ++m_ref_count; }
 
-ULONG STDMETHODCALLTYPE com_interface_handler::Release() {
+ULONG STDMETHODCALLTYPE com_event_handler::Release() {
   if (m_ref_count > 1) {
     return --m_ref_count;
   }
@@ -20,8 +18,8 @@ ULONG STDMETHODCALLTYPE com_interface_handler::Release() {
   return 0;
 }
 
-HRESULT STDMETHODCALLTYPE com_interface_handler::QueryInterface(REFIID riid,
-                                                                LPVOID *ppv) {
+HRESULT STDMETHODCALLTYPE com_event_handler::QueryInterface(REFIID riid,
+                                                            LPVOID *ppv) {
   using namespace webview2_loader::cast_info; // TBD: remove this line
 
   if (!ppv) {
@@ -49,7 +47,7 @@ HRESULT STDMETHODCALLTYPE com_interface_handler::QueryInterface(REFIID riid,
 }
 
 HRESULT STDMETHODCALLTYPE
-com_interface_handler::Invoke(HRESULT res, ICoreWebView2Environment *env) {
+com_event_handler::Invoke(HRESULT res, ICoreWebView2Environment *env) {
   if (SUCCEEDED(res)) {
     res = env->CreateCoreWebView2Controller(m_window, this);
     if (SUCCEEDED(res)) {
@@ -60,8 +58,8 @@ com_interface_handler::Invoke(HRESULT res, ICoreWebView2Environment *env) {
   return S_OK;
 }
 
-HRESULT STDMETHODCALLTYPE com_interface_handler::Invoke(
-    HRESULT res, ICoreWebView2Controller *controller) {
+HRESULT STDMETHODCALLTYPE
+com_event_handler::Invoke(HRESULT res, ICoreWebView2Controller *controller) {
   if (FAILED(res)) {
     // See try_create_environment() regarding
     // HRESULT_FROM_WIN32(ERROR_INVALID_STATE).
@@ -85,7 +83,7 @@ HRESULT STDMETHODCALLTYPE com_interface_handler::Invoke(
   return S_OK;
 }
 
-HRESULT STDMETHODCALLTYPE com_interface_handler::Invoke(
+HRESULT STDMETHODCALLTYPE com_event_handler::Invoke(
     ICoreWebView2 *sender, ICoreWebView2WebMessageReceivedEventArgs *args) {
   LPWSTR message;
   args->TryGetWebMessageAsString(&message);
@@ -96,7 +94,7 @@ HRESULT STDMETHODCALLTYPE com_interface_handler::Invoke(
   return S_OK;
 }
 
-HRESULT STDMETHODCALLTYPE com_interface_handler::Invoke(
+HRESULT STDMETHODCALLTYPE com_event_handler::Invoke(
     ICoreWebView2 *sender, ICoreWebView2PermissionRequestedEventArgs *args) {
   COREWEBVIEW2_PERMISSION_KIND kind;
   args->get_PermissionKind(&kind);
@@ -106,12 +104,12 @@ HRESULT STDMETHODCALLTYPE com_interface_handler::Invoke(
   return S_OK;
 }
 
-void com_interface_handler::set_attempt_handler(
+void com_event_handler::set_attempt_handler(
     std::function<HRESULT()> attempt_handler) noexcept {
   m_attempt_handler = attempt_handler;
 }
 
-void com_interface_handler::try_create_environment() noexcept {
+void com_event_handler::try_create_environment() noexcept {
   // WebView creation fails with HRESULT_FROM_WIN32(ERROR_INVALID_STATE) if
   // a running instance using the same user data folder exists, and the
   // Environment objects have different EnvironmentOptions.

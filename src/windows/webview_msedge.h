@@ -40,9 +40,9 @@ using msg_cb_t = std::function<void(const std::string)>;
 } // namespace webview
 
 #include "webview2_loader/msedge_runtime_loader.hpp"
-#include "webview2_loader/com_interface_handler.hpp"
+#include "webview2_loader/com_event_handler.hpp"
 
-using com_interface_handler = webview::webview2_loader::com_interface_handler;
+using com_event_handler = webview::webview2_loader::com_event_handler;
 
 namespace webview {
 
@@ -235,7 +235,7 @@ private:
     wchar_t userDataFolder[MAX_PATH];
     PathCombineW(userDataFolder, dataPath, currentExeName);
 
-    m_com_handler = new com_interface_handler(
+    m_com_handler = new com_event_handler(
         wnd, cb,
         [&](ICoreWebView2Controller *controller, ICoreWebView2 *webview) {
           if (!controller || !webview) {
@@ -310,7 +310,7 @@ private:
   DWORD m_main_thread = GetCurrentThreadId();
   ICoreWebView2 *m_webview = nullptr;
   ICoreWebView2Controller *m_controller = nullptr;
-  com_interface_handler *m_com_handler = nullptr;
+  com_event_handler *m_com_handler = nullptr;
   webview::webview2_loader::msedge_runtime_loader m_webview2_loader;
 };
 
