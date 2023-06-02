@@ -2,6 +2,8 @@
 
 #include <windows.h>
 
+#include "com_init_wrapper.hpp"
+
 // Holds a symbol name and associated type for code clarity.
 template <typename T> class library_symbol {
 public:
