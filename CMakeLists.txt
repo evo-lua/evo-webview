@@ -9,7 +9,7 @@ set(CROSSPLATFORM_SOURCES "src/common/webview.cc")
 
 if(WIN32)
 	set(WINDOWS_SOURCES ${WINDOWS_SOURCES}
-		# TODO
+		src/windows/webview2_loader/reg_key.cpp
 	)
 elseif(APPLE)
 	set(OSX_SOURCES ${OSX_SOURCES}
