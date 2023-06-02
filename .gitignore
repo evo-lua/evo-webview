@@ -11,3 +11,4 @@ webview-example
 *.o
 
 examples/scrape/scrape
+*.log
