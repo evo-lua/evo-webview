@@ -30,13 +30,11 @@
 #include "webview.h"
 #include "wstring_utils.hpp"
 
-namespace webview {
-using dispatch_fn_t = std::function<void()>;
-
-using msg_cb_t = std::function<void(const std::string)>;
-
 #include "mswebview_engine.hpp"
 
+namespace webview {
+using dispatch_fn_t = std::function<void()>;
+using msg_cb_t = std::function<void(const std::string)>;
 } // namespace webview
 
 #include "webview2_loader/msedge_runtime_loader.hpp"

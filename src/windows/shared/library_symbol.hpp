@@ -1,5 +1,7 @@
 #pragma once
 
+namespace webview {
+
 // Holds a symbol name and associated type for code clarity.
 template <typename T> class library_symbol {
 public:
@@ -11,3 +13,5 @@ public:
 private:
   const char *m_name;
 };
+
+} // namespace webview

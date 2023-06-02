@@ -6,6 +6,8 @@
 #include "shared/library_symbol.hpp"
 #include "shared/native_library.hpp"
 
+namespace webview {
+
 struct user32_symbols {
   using DPI_AWARENESS_CONTEXT = HANDLE;
   using SetProcessDpiAwarenessContext_t = BOOL(WINAPI *)(DPI_AWARENESS_CONTEXT);
@@ -45,3 +47,5 @@ inline bool enable_dpi_awareness() {
   }
   return true;
 }
+
+} // namespace webview
