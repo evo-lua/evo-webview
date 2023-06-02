@@ -1,3 +1,10 @@
+#pragma once
+
+#include <cstddef>
+#include <cstring>
+#include <map>
+#include <string>
+
 namespace webview {
 
 namespace json {

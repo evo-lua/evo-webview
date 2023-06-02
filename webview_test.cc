@@ -9,10 +9,12 @@
 
 #include "webview.h"
 
+#include <atomic>
 #include <cassert>
 #include <cstdint>
 #include <cstring>
 #include <iostream>
+#include <functional>
 #include <thread>
 #include <unordered_map>
 
@@ -274,11 +276,14 @@ static void run_with_timeout(std::function<void()> fn, int timeout_ms) {
 }
 
 #if _WIN32
+
+#include "wstring_utils.hpp"
+
 // =================================================================
 // TEST: ensure that version number parsing works on Windows.
 // =================================================================
 static void test_parse_version() {
-  using namespace webview::detail;
+  using namespace webview::webview2_loader;
   auto v = parse_version("");
   assert(v.size() == 4);
   assert(v[0] == 0 && v[1] == 0 && v[2] == 0 && v[3] == 0);
@@ -311,7 +316,8 @@ static void test_parse_version() {
 // TEST: ensure that narrow/wide string conversion works on Windows.
 // =================================================================
 static void test_win32_narrow_wide_string_conversion() {
-  using namespace webview::detail;
+  using namespace webview::wstring;
+
   assert(widen_string("").empty());
   assert(narrow_string(L"").empty());
   assert(widen_string("foo") == L"foo");
