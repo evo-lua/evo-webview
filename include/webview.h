@@ -188,18 +188,6 @@ WEBVIEW_API const webview_version_info_t *webview_version();
 
 #ifndef WEBVIEW_HEADER
 
-#if !defined(WEBVIEW_GTK) && !defined(WEBVIEW_COCOA) && !defined(WEBVIEW_EDGE)
-#if defined(__APPLE__)
-#define WEBVIEW_COCOA
-#elif defined(__unix__)
-#define WEBVIEW_GTK
-#elif defined(_WIN32)
-#define WEBVIEW_EDGE
-#else
-#error "please, specify webview backend"
-#endif
-#endif
-
 #include <array>
 #include <atomic>
 #include <functional>
@@ -210,24 +198,7 @@ WEBVIEW_API const webview_version_info_t *webview_version();
 #include <vector>
 
 #include <cstring>
-
-#include "json_utils.hpp"
-
-#if defined(WEBVIEW_GTK)
-#include "webview_gtk.h"
-
-#elif defined(WEBVIEW_COCOA)
-
-#include "webview_cocoa.h"
-
-#elif defined(WEBVIEW_EDGE)
-
-#include "webview_msedge.h"
-
-#endif /* WEBVIEW_GTK, WEBVIEW_COCOA, WEBVIEW_EDGE */
-
 #include "browser_engine.hpp"
-
 #include "webview_c_api.h"
 
 #endif /* WEBVIEW_HEADER */
