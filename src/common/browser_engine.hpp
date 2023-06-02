@@ -19,7 +19,7 @@
 #elif defined(WEBVIEW_COCOA)
 #include "webview_cocoa.h"
 #elif defined(WEBVIEW_EDGE)
-#include "webview_msedge.h"
+#include "mswebview_engine.hpp"
 #endif /* WEBVIEW_GTK, WEBVIEW_COCOA, WEBVIEW_EDGE */
 
 namespace webview {
