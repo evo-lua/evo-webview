@@ -39,7 +39,7 @@ using msg_cb_t = std::function<void(const std::string)>;
 
 } // namespace webview
 
-#include "webview2_loader/loader.hpp"
+#include "webview2_loader/msedge_runtime_loader.hpp"
 #include "webview2_loader/com_interface_handler.hpp"
 
 using com_interface_handler = webview::webview2_loader::com_interface_handler;
@@ -311,7 +311,7 @@ private:
   ICoreWebView2 *m_webview = nullptr;
   ICoreWebView2Controller *m_controller = nullptr;
   com_interface_handler *m_com_handler = nullptr;
-  webview::webview2_loader::loader m_webview2_loader;
+  webview::webview2_loader::msedge_runtime_loader m_webview2_loader;
 };
 
 using browser_engine = win32_edge_engine;

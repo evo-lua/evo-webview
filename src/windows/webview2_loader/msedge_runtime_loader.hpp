@@ -1,7 +1,7 @@
 #pragma once
 
 #include "shared/library_symbol.hpp"
-#include "loader.hpp"
+#include "msedge_runtime_loader.hpp"
 #include "shared/native_library.hpp"
 #include "reg_key.hpp"
 
@@ -147,7 +147,7 @@ std::wstring get_file_version_string(const std::wstring &file_path) noexcept {
   return std::wstring(version, version_length);
 }
 
-class loader {
+class msedge_runtime_loader {
 public:
   HRESULT create_environment_with_options(
       PCWSTR browser_dir, PCWSTR user_data_dir,
