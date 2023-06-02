@@ -40,7 +40,7 @@
 #include <vector>
 
 #include <cstring>
-#include "browser_engine.hpp"
+#include "webview.hpp"
 #include "webview_c_api.h"
 
 #endif /* WEBVIEW_HEADER */
