@@ -40,9 +40,9 @@ using msg_cb_t = std::function<void(const std::string)>;
 } // namespace webview
 
 #include "webview2_loader/loader.hpp"
-#include "webview2_loader/webview2_com_handler.hpp"
+#include "webview2_loader/com_interface_handler.hpp"
 
-using webview2_com_handler = webview::webview2_loader::webview2_com_handler;
+using com_interface_handler = webview::webview2_loader::com_interface_handler;
 
 namespace webview {
 
@@ -235,7 +235,7 @@ private:
     wchar_t userDataFolder[MAX_PATH];
     PathCombineW(userDataFolder, dataPath, currentExeName);
 
-    m_com_handler = new webview2_com_handler(
+    m_com_handler = new com_interface_handler(
         wnd, cb,
         [&](ICoreWebView2Controller *controller, ICoreWebView2 *webview) {
           if (!controller || !webview) {
@@ -310,7 +310,7 @@ private:
   DWORD m_main_thread = GetCurrentThreadId();
   ICoreWebView2 *m_webview = nullptr;
   ICoreWebView2Controller *m_controller = nullptr;
-  webview2_com_handler *m_com_handler = nullptr;
+  com_interface_handler *m_com_handler = nullptr;
   webview::webview2_loader::loader m_webview2_loader;
 };
 

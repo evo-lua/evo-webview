@@ -35,21 +35,22 @@ static constexpr auto permission_requested =
         IID_ICoreWebView2PermissionRequestedEventHandler};
 } // namespace cast_info
 
-class webview2_com_handler
+class com_interface_handler
     : public ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler,
       public ICoreWebView2CreateCoreWebView2ControllerCompletedHandler,
       public ICoreWebView2WebMessageReceivedEventHandler,
       public ICoreWebView2PermissionRequestedEventHandler {
-  using webview2_com_handler_cb_t =
+  using com_interface_handler_cb_t =
       std::function<void(ICoreWebView2Controller *, ICoreWebView2 *webview)>;
 
 public:
-  webview2_com_handler(HWND hwnd, msg_cb_t msgCb, webview2_com_handler_cb_t cb);
-  virtual ~webview2_com_handler() = default;
-  webview2_com_handler(const webview2_com_handler &other) = delete;
-  webview2_com_handler &operator=(const webview2_com_handler &other) = delete;
-  webview2_com_handler(webview2_com_handler &&other) = delete;
-  webview2_com_handler &operator=(webview2_com_handler &&other) = delete;
+  com_interface_handler(HWND hwnd, msg_cb_t msgCb,
+                        com_interface_handler_cb_t cb);
+  virtual ~com_interface_handler() = default;
+  com_interface_handler(const com_interface_handler &other) = delete;
+  com_interface_handler &operator=(const com_interface_handler &other) = delete;
+  com_interface_handler(com_interface_handler &&other) = delete;
+  com_interface_handler &operator=(com_interface_handler &&other) = delete;
 
   ULONG STDMETHODCALLTYPE AddRef();
   ULONG STDMETHODCALLTYPE Release();
@@ -91,7 +92,7 @@ public:
 private:
   HWND m_window;
   msg_cb_t m_msgCb;
-  webview2_com_handler_cb_t m_cb;
+  com_interface_handler_cb_t m_cb;
   std::atomic<ULONG> m_ref_count{1};
   std::function<HRESULT()> m_attempt_handler;
   unsigned int m_max_attempts = 5;
