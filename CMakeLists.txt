@@ -11,6 +11,7 @@ if(WIN32)
 	set(WINDOWS_SOURCES ${WINDOWS_SOURCES}
 		src/windows/webview2_loader/reg_key.cpp
 		src/windows/webview2_loader/com_event_handler.cpp
+		src/windows/webview2_loader/msedge_runtime_loader.cpp
 	)
 elseif(APPLE)
 	set(OSX_SOURCES ${OSX_SOURCES}
