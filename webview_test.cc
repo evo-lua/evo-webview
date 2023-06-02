@@ -316,7 +316,6 @@ static void test_parse_version() {
 // TEST: ensure that narrow/wide string conversion works on Windows.
 // =================================================================
 static void test_win32_narrow_wide_string_conversion() {
-//   using namespace webview;
   using namespace webview::wstring;
 
   assert(widen_string("").empty());
