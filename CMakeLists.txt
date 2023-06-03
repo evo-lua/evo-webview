@@ -21,7 +21,7 @@ elseif(APPLE)
 	)
 else()
 	set(LINUX_SOURCES ${LINUX_SOURCES}
-		# TODO
+		src/linux/webkit2gtk_engine.cpp
 	)
 endif()
 
