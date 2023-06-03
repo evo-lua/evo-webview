@@ -5,7 +5,10 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-set(CROSSPLATFORM_SOURCES "src/common/webview.cc")
+set(CROSSPLATFORM_SOURCES
+	src/common/c_api.cpp
+	src/common/webview.cpp
+)
 
 if(WIN32)
 	set(WINDOWS_SOURCES ${WINDOWS_SOURCES}

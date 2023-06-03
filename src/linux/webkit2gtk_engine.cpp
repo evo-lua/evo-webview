@@ -15,7 +15,7 @@
 #include <functional>
 #include <string>
 
-#include "c_api.h"
+#include "webview.h"
 #include "webkit2gtk_engine.hpp"
 
 namespace webview {

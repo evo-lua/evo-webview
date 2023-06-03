@@ -1,3 +1,6 @@
+#include "webview.h"
+#include "webview.hpp"
+
 WEBVIEW_API webview_t webview_create(int debug, void *wnd) {
   auto w = new webview::webview(debug, wnd);
   if (!w->window()) {
@@ -74,13 +77,16 @@ WEBVIEW_API void webview_return(webview_t w, const char *seq, int status,
   static_cast<webview::webview *>(w)->resolve(seq, status, result);
 }
 
+namespace webview {
 // The library's version information.
 constexpr const webview_version_info_t library_version_info{
     {WEBVIEW_VERSION_MAJOR, WEBVIEW_VERSION_MINOR, WEBVIEW_VERSION_PATCH},
     WEBVIEW_VERSION_NUMBER,
     WEBVIEW_VERSION_PRE_RELEASE,
     WEBVIEW_VERSION_BUILD_METADATA};
+} // namespace webview
 
 WEBVIEW_API const webview_version_info_t *webview_version() {
-  return &library_version_info;
+
+  return &webview::library_version_info;
 }

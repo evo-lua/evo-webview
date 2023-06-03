@@ -25,7 +25,7 @@
 #include "webview2_loader/msedge_runtime_loader.hpp"
 #include "webview2_loader/com_event_handler.hpp"
 
-#include "c_api.h"
+#include "webview.h"
 #include "com_init_wrapper.hpp"
 #include "mswebview_engine.hpp"
 #include "wstring_utils.hpp"

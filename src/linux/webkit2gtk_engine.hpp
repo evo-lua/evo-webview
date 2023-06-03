@@ -7,7 +7,7 @@
 #include <functional>
 #include <string>
 
-#include "c_api.h"
+#include "webview.h"
 
 namespace webview {
 

@@ -44,3 +44,12 @@ When in doubt, check the [Build Workflows](https://github.com/evo-lua/evo-webvie
 Here's an example showing how the library can be included in your CMake project:
 
 * [Tests/Fixtures/WebViewTestApp/CMakeLists.txt](Tests/Fixtures/WebViewTestApp/CMakeLists.txt)
+
+## Including without CMake
+
+You can simply add the ``include/`` directory, then import the desired API:
+
+```cpp
+#include "webview.h" // Provides the C API only
+#include "webview.hpp" // Provides both the C and the C++ API
+```
