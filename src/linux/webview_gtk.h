@@ -121,8 +121,9 @@ public:
   }
 
   void eval(const std::string &js) {
-    webkit_web_view_run_javascript(WEBKIT_WEB_VIEW(m_webview), js.c_str(),
-                                   nullptr, nullptr, nullptr);
+    webkit_web_view_evaluate_javascript(WEBKIT_WEB_VIEW(m_webview), js.c_str(),
+                                        -1, nullptr, nullptr, nullptr, nullptr,
+                                        nullptr);
   }
 
 private:
