@@ -15,7 +15,7 @@
 #include "json_utils.hpp"
 
 #if defined(WEBVIEW_GTK)
-#include "webview_gtk.h"
+#include "webkit2gtk_engine.hpp"
 #elif defined(WEBVIEW_COCOA)
 #include "webview_cocoa.h"
 #elif defined(WEBVIEW_EDGE)
