@@ -1,6 +1,6 @@
 echo "Discovering sources ..."
 
-RELEVANT_FILES_TO_FORMAT=$(find . -type f \( -name "*.c" -o -name "*.h" -o -name "*.cpp" -o -name "*.hpp" -o -name "*.mm" \) -print -o -path "*/deps" -prune -o -path "*/cmakebuild*" -prune)
+RELEVANT_FILES_TO_FORMAT=$(find . -type f \( -name "*.c" -o -name "*.h" -o -name "*.cpp" -o -name "*.hpp" -o -name "*.mm" -o -name "*.cc" \) -print -o -path "*/deps" -prune -o -path "*/cmakebuild*" -prune)
 
 if [ -n "$RELEVANT_FILES_TO_FORMAT" ]; then
 	echo "Discovered sources:"
