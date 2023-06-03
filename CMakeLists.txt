@@ -17,7 +17,7 @@ if(WIN32)
 	)
 elseif(APPLE)
 	set(OSX_SOURCES ${OSX_SOURCES}
-		# TODO
+		src/macOS/cocoa_engine.mm
 	)
 else()
 	set(LINUX_SOURCES ${LINUX_SOURCES}

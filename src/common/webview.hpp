@@ -17,7 +17,7 @@
 #if defined(WEBVIEW_GTK)
 #include "webkit2gtk_engine.hpp"
 #elif defined(WEBVIEW_COCOA)
-#include "webview_cocoa.h"
+#include "cocoa_engine.hpp"
 #elif defined(WEBVIEW_EDGE)
 #include "mswebview_engine.hpp"
 #endif /* WEBVIEW_GTK, WEBVIEW_COCOA, WEBVIEW_EDGE */
