@@ -223,14 +223,13 @@ id cocoa_wkwebview_engine::get_main_bundle() noexcept {
   return objc::msg_send<id>("NSBundle"_cls, "mainBundle"_sel);
 }
 bool cocoa_wkwebview_engine::is_app_bundled() noexcept {
-  id bundle = get_main_bundle();
+  NSBundle *bundle = get_main_bundle();
   if (!bundle) {
     return false;
   }
-  id bundle_path = objc::msg_send<id>(bundle, "bundlePath"_sel);
-  auto bundled =
-      objc::msg_send<BOOL>(bundle_path, "hasSuffix:"_sel, ".app"_str);
-  return !!bundled;
+  NSString *bundlePath = [bundle bundlePath];
+  BOOL bundled = [bundlePath hasSuffix:@".app"];
+  return bundled;
 }
 void cocoa_wkwebview_engine::on_application_did_finish_launching(
     id /*delegate*/, id app) {
