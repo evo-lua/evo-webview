@@ -32,7 +32,7 @@ Result msg_send(Args... args) noexcept {
 
 } // namespace objc
 
-enum NSBackingStoreType : NSUInteger { NSBackingStoreBuffered = 2 };
+// enum NSBackingStoreType : NSUInteger { NSBackingStoreBuffered = 2 };
 
 enum NSWindowStyleMask : NSUInteger {
   NSWindowStyleMaskTitled = 1,
@@ -41,9 +41,9 @@ enum NSWindowStyleMask : NSUInteger {
   NSWindowStyleMaskResizable = 8
 };
 
-enum NSApplicationActivationPolicy : NSInteger {
-  NSApplicationActivationPolicyRegular = 0
-};
+// enum NSApplicationActivationPolicy : NSInteger {
+//   NSApplicationActivationPolicyRegular = 0
+// };
 
 enum WKUserScriptInjectionTime : NSInteger {
   WKUserScriptInjectionTimeAtDocumentStart = 0
