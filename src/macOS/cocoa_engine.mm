@@ -46,7 +46,7 @@ cocoa_wkwebview_engine::cocoa_wkwebview_engine(bool debug, void *window)
 void *cocoa_wkwebview_engine::window() { return (void *)m_window; }
 void cocoa_wkwebview_engine::terminate() {
   id app = get_shared_application();
-  objc::msg_send<void>(app, "terminate:"_sel, nullptr);
+  [app terminate:nil];
 }
 void cocoa_wkwebview_engine::run() {
   id app = get_shared_application();
