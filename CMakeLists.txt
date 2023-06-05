@@ -38,7 +38,11 @@ if(WIN32)
 	target_link_libraries(webview PUBLIC advapi32 ole32 shell32 shlwapi user32 version)
 elseif(APPLE)
 	target_include_directories(webview PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/macOS)
-	target_link_libraries(webview PUBLIC "-framework WebKit")
+	target_link_libraries(webview PUBLIC
+		"-framework WebKit"
+		"-framework Foundation"
+		"-framework AppKit"
+	)
 else()
 	find_package(PkgConfig REQUIRED)
 	pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
