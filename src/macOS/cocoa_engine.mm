@@ -105,16 +105,11 @@ void cocoa_wkwebview_engine::set_html(const std::string &html) {
                        nullptr);
 }
 void cocoa_wkwebview_engine::init(const std::string &js) {
-  // Equivalent Obj-C:
-  // [m_manager addUserScript:[[WKUserScript alloc] initWithSource:[NSString stringWithUTF8String:js.c_str()] injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES]]
-  objc::msg_send<void>(
-      m_manager, "addUserScript:"_sel,
-      objc::msg_send<id>(objc::msg_send<id>("WKUserScript"_cls, "alloc"_sel),
-                         "initWithSource:injectionTime:forMainFrameOnly:"_sel,
-                         objc::msg_send<id>("NSString"_cls,
-                                            "stringWithUTF8String:"_sel,
-                                            js.c_str()),
-                         WKUserScriptInjectionTimeAtDocumentStart, YES));
+  [m_manager addUserScript:
+                 [[WKUserScript alloc]
+                       initWithSource:[NSString stringWithUTF8String:js.c_str()]
+                        injectionTime:WKUserScriptInjectionTimeAtDocumentStart
+                     forMainFrameOnly:YES]];
 }
 void cocoa_wkwebview_engine::eval(const std::string &js) {
   objc::msg_send<void>(m_webview, "evaluateJavaScript:completionHandler:"_sel,
