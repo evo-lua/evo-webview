@@ -210,7 +210,7 @@ id cocoa_wkwebview_engine::create_webkit_ui_delegate() {
   return objc::msg_send<id>((id)cls, "new"_sel);
 }
 id cocoa_wkwebview_engine::get_shared_application() {
-  return [NSApplication sharedApplication];
+  return objc::msg_send<id>("NSApplication"_cls, "sharedApplication"_sel);
 }
 cocoa_wkwebview_engine *
 cocoa_wkwebview_engine::get_associated_webview(id object) {
@@ -220,16 +220,17 @@ cocoa_wkwebview_engine::get_associated_webview(id object) {
   return w;
 }
 id cocoa_wkwebview_engine::get_main_bundle() noexcept {
-  return [NSBundle mainBundle];
+  return objc::msg_send<id>("NSBundle"_cls, "mainBundle"_sel);
 }
 bool cocoa_wkwebview_engine::is_app_bundled() noexcept {
-  NSBundle *bundle = get_main_bundle();
+  id bundle = get_main_bundle();
   if (!bundle) {
     return false;
   }
-  NSString *bundlePath = [bundle bundlePath];
-  BOOL bundled = [bundlePath hasSuffix:@".app"];
-  return bundled;
+  id bundle_path = objc::msg_send<id>(bundle, "bundlePath"_sel);
+  auto bundled =
+      objc::msg_send<BOOL>(bundle_path, "hasSuffix:"_sel, ".app"_str);
+  return !!bundled;
 }
 void cocoa_wkwebview_engine::on_application_did_finish_launching(
     id /*delegate*/, id app) {
@@ -237,7 +238,7 @@ void cocoa_wkwebview_engine::on_application_did_finish_launching(
   if (!m_parent_window) {
     // Stop the main run loop so that we can return
     // from the constructor.
-	[app stop:nil];
+    objc::msg_send<void>(app, "stop:"_sel, nullptr);
   }
 
   // Activate the app if it is not bundled.
@@ -251,40 +252,66 @@ void cocoa_wkwebview_engine::on_application_did_finish_launching(
   if (!is_app_bundled()) {
     // "setActivationPolicy:" must be invoked before
     // "activateIgnoringOtherApps:" for activation to work.
-	[app setActivationPolicy:NSApplicationActivationPolicyRegular];
+    objc::msg_send<void>(app, "setActivationPolicy:"_sel,
+                         NSApplicationActivationPolicyRegular);
     // Activate the app regardless of other active apps.
     // This can be obtrusive so we only do it when necessary.
-	[app activateIgnoringOtherApps:YES];
+    objc::msg_send<void>(app, "activateIgnoringOtherApps:"_sel, YES);
   }
 
   // Main window
   if (!m_parent_window) {
-	NSRect frame = NSMakeRect(0, 0, 0, 0);
+    m_window = objc::msg_send<id>("NSWindow"_cls, "alloc"_sel);
     auto style = NSWindowStyleMaskTitled;
-	    m_window = [[[NSWindow alloc] initWithContentRect:frame
-                    styleMask:style
-                    backing:NSBackingStoreBuffered
-                    defer:NO] autorelease]; // TBD autorelease useful or not?
-	} else m_window = (id)m_parent_window;
+    m_window = objc::msg_send<id>(
+        m_window, "initWithContentRect:styleMask:backing:defer:"_sel,
+        CGRectMake(0, 0, 0, 0), style, NSBackingStoreBuffered, NO);
+  } else {
+    m_window = (id)m_parent_window;
+  }
 
   // Webview
-  id config = [WKWebViewConfiguration new];
-  m_manager = [config userContentController];
-  m_webview = [WKWebView alloc];
+  id config = objc::msg_send<id>("WKWebViewConfiguration"_cls, "new"_sel);
+  m_manager = objc::msg_send<id>(config, "userContentController"_sel);
+  m_webview = objc::msg_send<id>("WKWebView"_cls, "alloc"_sel);
 
   if (m_debug) {
-	[[config preferences] setValue:@YES forKey:@"developerExtrasEnabled"];
-	[[config preferences] setValue:@YES forKey:@"fullScreenEnabled"];
-	[[config preferences] setValue:@YES forKey:@"javaScriptCanAccessClipboard"];
-	[[config preferences] setValue:@YES forKey:@"DOMPasteAllowed"];
+    // Equivalent Obj-C:
+    // [[config preferences] setValue:@YES forKey:@"developerExtrasEnabled"];
+    objc::msg_send<id>(
+        objc::msg_send<id>(config, "preferences"_sel), "setValue:forKey:"_sel,
+        objc::msg_send<id>("NSNumber"_cls, "numberWithBool:"_sel, YES),
+        "developerExtrasEnabled"_str);
   }
-  id ui_delegate = create_webkit_ui_delegate();
-	NSRect frame = NSMakeRect(0, 0, 0, 0);
 
-  [m_webview initWithFrame:frame configuration:config];
-  [m_webview setUIDelegate:ui_delegate];
+  // Equivalent Obj-C:
+  // [[config preferences] setValue:@YES forKey:@"fullScreenEnabled"];
+  objc::msg_send<id>(
+      objc::msg_send<id>(config, "preferences"_sel), "setValue:forKey:"_sel,
+      objc::msg_send<id>("NSNumber"_cls, "numberWithBool:"_sel, YES),
+      "fullScreenEnabled"_str);
+
+  // Equivalent Obj-C:
+  // [[config preferences] setValue:@YES forKey:@"javaScriptCanAccessClipboard"];
+  objc::msg_send<id>(
+      objc::msg_send<id>(config, "preferences"_sel), "setValue:forKey:"_sel,
+      objc::msg_send<id>("NSNumber"_cls, "numberWithBool:"_sel, YES),
+      "javaScriptCanAccessClipboard"_str);
+
+  // Equivalent Obj-C:
+  // [[config preferences] setValue:@YES forKey:@"DOMPasteAllowed"];
+  objc::msg_send<id>(
+      objc::msg_send<id>(config, "preferences"_sel), "setValue:forKey:"_sel,
+      objc::msg_send<id>("NSNumber"_cls, "numberWithBool:"_sel, YES),
+      "DOMPasteAllowed"_str);
+
+  id ui_delegate = create_webkit_ui_delegate();
+  objc::msg_send<void>(m_webview, "initWithFrame:configuration:"_sel,
+                       CGRectMake(0, 0, 0, 0), config);
+  objc::msg_send<void>(m_webview, "setUIDelegate:"_sel, ui_delegate);
   id script_message_handler = create_script_message_handler();
-  [m_manager addScriptMessageHandler:script_message_handler name:@"ëxternal"];
+  objc::msg_send<void>(m_manager, "addScriptMessageHandler:name:"_sel,
+                       script_message_handler, "external"_str);
 
   init(R""(
       window.external = {
@@ -293,8 +320,8 @@ void cocoa_wkwebview_engine::on_application_did_finish_launching(
         },
       };
       )"");
-	  [m_window setContentView:m_webview];
-	  [m_window makeKeyAndOrderFront:nil];
+  objc::msg_send<void>(m_window, "setContentView:"_sel, m_webview);
+  objc::msg_send<void>(m_window, "makeKeyAndOrderFront:"_sel, nullptr);
 }
 
 } // namespace webview
