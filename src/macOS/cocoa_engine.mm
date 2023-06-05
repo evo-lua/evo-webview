@@ -29,7 +29,8 @@ cocoa_wkwebview_engine::cocoa_wkwebview_engine(bool debug, void *window)
   id delegate = create_app_delegate();
   objc_setAssociatedObject(delegate, "webview", (id)this,
                            OBJC_ASSOCIATION_ASSIGN);
-  objc::msg_send<void>(app, "setDelegate:"_sel, delegate);
+
+  [app setDelegate:delegate];
 
   // See comments related to application lifecycle in create_app_delegate().
   if (window) {
