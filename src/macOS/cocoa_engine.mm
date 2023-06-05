@@ -252,11 +252,10 @@ void cocoa_wkwebview_engine::on_application_did_finish_launching(
   if (!is_app_bundled()) {
     // "setActivationPolicy:" must be invoked before
     // "activateIgnoringOtherApps:" for activation to work.
-    objc::msg_send<void>(app, "setActivationPolicy:"_sel,
-                         NSApplicationActivationPolicyRegular);
+    [app setActivationPolicy:NSApplicationActivationPolicyRegular];
     // Activate the app regardless of other active apps.
     // This can be obtrusive so we only do it when necessary.
-    objc::msg_send<void>(app, "activateIgnoringOtherApps:"_sel, YES);
+    [app activateIgnoringOtherApps:YES];
   }
 
   // Main window
