@@ -118,8 +118,13 @@ void cocoa_wkwebview_engine::eval(const std::string &js) {
   NSString *jsString = [NSString stringWithUTF8String:js.c_str()];
 
   [m_webview evaluateJavaScript:jsString
-              completionHandler:^(id result, NSError *error){
-                  // Handle result or error here, if needed?
+              completionHandler:^(id result, NSError *error) {
+                // Handle result or error here, if needed?
+                // if (error) {
+                //   NSLog(@"JavaScript evaluation error: %@", error);
+                // } else {
+                //   NSLog(@"JavaScript evaluation result: %@", result);
+                // }
               }];
 }
 
