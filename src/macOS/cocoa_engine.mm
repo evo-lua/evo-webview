@@ -98,11 +98,8 @@ void cocoa_wkwebview_engine::navigate(const std::string &url) {
       objc::msg_send<id>("NSURLRequest"_cls, "requestWithURL:"_sel, nsurl));
 }
 void cocoa_wkwebview_engine::set_html(const std::string &html) {
-  objc::msg_send<void>(m_webview, "loadHTMLString:baseURL:"_sel,
-                       objc::msg_send<id>("NSString"_cls,
-                                          "stringWithUTF8String:"_sel,
-                                          html.c_str()),
-                       nullptr);
+  NSString *htmlString = [NSString stringWithUTF8String:html.c_str()];
+  [(WKWebView *)m_webview loadHTMLString:htmlString baseURL:nil];
 }
 void cocoa_wkwebview_engine::init(const std::string &js) {
   NSString *jsString = [NSString stringWithUTF8String:js.c_str()];
@@ -118,13 +115,13 @@ void cocoa_wkwebview_engine::eval(const std::string &js) {
   NSString *jsString = [NSString stringWithUTF8String:js.c_str()];
 
   [m_webview evaluateJavaScript:jsString
-              completionHandler:^(id result, NSError *error) {
-                // Handle result or error here, if needed?
-                // if (error) {
-                //   NSLog(@"JavaScript evaluation error: %@", error);
-                // } else {
-                //   NSLog(@"JavaScript evaluation result: %@", result);
-                // }
+              completionHandler:^(id result, NSError *error){
+                  // Handle result or error here, if needed?
+                  // if (error) {
+                  //   NSLog(@"JavaScript evaluation error: %@", error);
+                  // } else {
+                  //   NSLog(@"JavaScript evaluation result: %@", result);
+                  // }
               }];
 }
 
