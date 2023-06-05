@@ -271,39 +271,16 @@ void cocoa_wkwebview_engine::on_application_did_finish_launching(
     m_window = (id)m_parent_window;
 
   // Webview
-  id config = objc::msg_send<id>("WKWebViewConfiguration"_cls, "new"_sel);
-  m_manager = objc::msg_send<id>(config, "userContentController"_sel);
-  m_webview = objc::msg_send<id>("WKWebView"_cls, "alloc"_sel);
+  id config = [WKWebViewConfiguration new];
+  m_manager = [config userContentController];
+  m_webview = [WKWebView alloc];
 
   if (m_debug) {
-    // Equivalent Obj-C:
-    // [[config preferences] setValue:@YES forKey:@"developerExtrasEnabled"];
-    objc::msg_send<id>(
-        objc::msg_send<id>(config, "preferences"_sel), "setValue:forKey:"_sel,
-        objc::msg_send<id>("NSNumber"_cls, "numberWithBool:"_sel, YES),
-        "developerExtrasEnabled"_str);
+    [[config preferences] setValue:@YES forKey:@"developerExtrasEnabled"];
   }
-
-  // Equivalent Obj-C:
-  // [[config preferences] setValue:@YES forKey:@"fullScreenEnabled"];
-  objc::msg_send<id>(
-      objc::msg_send<id>(config, "preferences"_sel), "setValue:forKey:"_sel,
-      objc::msg_send<id>("NSNumber"_cls, "numberWithBool:"_sel, YES),
-      "fullScreenEnabled"_str);
-
-  // Equivalent Obj-C:
-  // [[config preferences] setValue:@YES forKey:@"javaScriptCanAccessClipboard"];
-  objc::msg_send<id>(
-      objc::msg_send<id>(config, "preferences"_sel), "setValue:forKey:"_sel,
-      objc::msg_send<id>("NSNumber"_cls, "numberWithBool:"_sel, YES),
-      "javaScriptCanAccessClipboard"_str);
-
-  // Equivalent Obj-C:
-  // [[config preferences] setValue:@YES forKey:@"DOMPasteAllowed"];
-  objc::msg_send<id>(
-      objc::msg_send<id>(config, "preferences"_sel), "setValue:forKey:"_sel,
-      objc::msg_send<id>("NSNumber"_cls, "numberWithBool:"_sel, YES),
-      "DOMPasteAllowed"_str);
+  [[config preferences] setValue:@YES forKey:@"fullScreenEnabled"];
+  [[config preferences] setValue:@YES forKey:@"javaScriptCanAccessClipboard"];
+  [[config preferences] setValue:@YES forKey:@"DOMPasteAllowed"];
 
   id ui_delegate = create_webkit_ui_delegate();
   objc::msg_send<void>(m_webview, "initWithFrame:configuration:"_sel,
