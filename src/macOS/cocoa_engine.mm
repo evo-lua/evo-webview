@@ -87,15 +87,14 @@ void cocoa_wkwebview_engine::set_size(int width, int height, int hints) {
   }
   objc::msg_send<void>(m_window, "center"_sel);
 }
-void cocoa_wkwebview_engine::navigate(const std::string &url) {
-  id nsurl = objc::msg_send<id>("NSURL"_cls, "URLWithString:"_sel,
-                                objc::msg_send<id>("NSString"_cls,
-                                                   "stringWithUTF8String:"_sel,
-                                                   url.c_str()));
+void cocoa_wkwebview_engine::navigate(const std::string &urlString) {
+  id url = objc::msg_send<id>("NSURL"_cls, "URLWithString:"_sel,
+                              objc::msg_send<id>("NSString"_cls,
+                                                 "stringWithUTF8String:"_sel,
+                                                 urlString.c_str()));
 
-  objc::msg_send<void>(
-      m_webview, "loadRequest:"_sel,
-      objc::msg_send<id>("NSURLRequest"_cls, "requestWithURL:"_sel, nsurl));
+  NSURLRequest *request = [NSURLRequest requestWithURL:url];
+  [(WKWebView *)m_webview loadRequest:request];
 }
 void cocoa_wkwebview_engine::set_html(const std::string &html) {
   NSString *htmlString = [NSString stringWithUTF8String:html.c_str()];
