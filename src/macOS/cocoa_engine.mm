@@ -238,7 +238,7 @@ void cocoa_wkwebview_engine::on_application_did_finish_launching(
   if (!m_parent_window) {
     // Stop the main run loop so that we can return
     // from the constructor.
-    objc::msg_send<void>(app, "stop:"_sel, nullptr);
+    [app stop:nil];
   }
 
   // Activate the app if it is not bundled.
