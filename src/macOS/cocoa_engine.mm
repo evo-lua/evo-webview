@@ -40,7 +40,7 @@ cocoa_wkwebview_engine::cocoa_wkwebview_engine(bool debug, void *window)
     // loop has started in order to perform further initialization.
     // We need to return from this constructor so this run loop is only
     // temporary.
-    objc::msg_send<void>(app, "run"_sel);
+    [app run];
   }
 }
 void *cocoa_wkwebview_engine::window() { return (void *)m_window; }
@@ -50,7 +50,7 @@ void cocoa_wkwebview_engine::terminate() {
 }
 void cocoa_wkwebview_engine::run() {
   id app = get_shared_application();
-  objc::msg_send<void>(app, "run"_sel);
+  [app run];
 }
 void cocoa_wkwebview_engine::dispatch(std::function<void()> f) {
   dispatch_async_f(dispatch_get_main_queue(), new dispatch_fn_t(f),
