@@ -282,12 +282,12 @@ void cocoa_wkwebview_engine::on_application_did_finish_launching(
   [[config preferences] setValue:@YES forKey:@"DOMPasteAllowed"];
 
   id ui_delegate = create_webkit_ui_delegate();
-  objc::msg_send<void>(m_webview, "initWithFrame:configuration:"_sel,
-                       CGRectMake(0, 0, 0, 0), config);
-  objc::msg_send<void>(m_webview, "setUIDelegate:"_sel, ui_delegate);
+  NSRect frame = NSMakeRect(0, 0, 0, 0);
+
+  [m_webview initWithFrame:frame configuration:config];
+  [m_webview setUIDelegate:ui_delegate];
   id script_message_handler = create_script_message_handler();
-  objc::msg_send<void>(m_manager, "addScriptMessageHandler:name:"_sel,
-                       script_message_handler, "external"_str);
+  [m_manager addScriptMessageHandler:script_message_handler name:@"external"];
 
   init(R""(
       window.external = {
@@ -296,8 +296,8 @@ void cocoa_wkwebview_engine::on_application_did_finish_launching(
         },
       };
       )"");
-  objc::msg_send<void>(m_window, "setContentView:"_sel, m_webview);
-  objc::msg_send<void>(m_window, "makeKeyAndOrderFront:"_sel, nullptr);
+  [m_window setContentView:m_webview];
+  [m_window makeKeyAndOrderFront:nil];
 }
 
 } // namespace webview
