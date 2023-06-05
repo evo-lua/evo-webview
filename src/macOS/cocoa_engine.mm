@@ -86,10 +86,10 @@ void cocoa_wkwebview_engine::set_size(int width, int height, int hints) {
   objc::msg_send<void>(m_window, "center"_sel);
 }
 void cocoa_wkwebview_engine::navigate(const std::string &url) {
-  id nsurl = objc::msg_send<id>(
-      "NSURL"_cls, "URLWithString:"_sel,
-      objc::msg_send<id>("NSString"_cls, "stringWithUTF8String:"_sel,
-                         url.c_str()));
+  id nsurl = objc::msg_send<id>("NSURL"_cls, "URLWithString:"_sel,
+                                objc::msg_send<id>("NSString"_cls,
+                                                   "stringWithUTF8String:"_sel,
+                                                   url.c_str()));
 
   objc::msg_send<void>(
       m_webview, "loadRequest:"_sel,
@@ -196,7 +196,7 @@ id cocoa_wkwebview_engine::create_webkit_ui_delegate() {
 
         // Invoke the completion handler block.
         id sig = objc::msg_send<id>("NSMethodSignature"_cls,
-                                      "signatureWithObjCTypes:"_sel, "v@?@");
+                                    "signatureWithObjCTypes:"_sel, "v@?@");
         id invocation = objc::msg_send<id>(
             "NSInvocation"_cls, "invocationWithMethodSignature:"_sel, sig);
         objc::msg_send<void>(invocation, "setTarget:"_sel, completion_handler);
