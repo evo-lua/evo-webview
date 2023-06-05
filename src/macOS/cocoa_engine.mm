@@ -210,7 +210,7 @@ id cocoa_wkwebview_engine::create_webkit_ui_delegate() {
   return objc::msg_send<id>((id)cls, "new"_sel);
 }
 id cocoa_wkwebview_engine::get_shared_application() {
-  return objc::msg_send<id>("NSApplication"_cls, "sharedApplication"_sel);
+  return [NSApplication sharedApplication];
 }
 cocoa_wkwebview_engine *
 cocoa_wkwebview_engine::get_associated_webview(id object) {
