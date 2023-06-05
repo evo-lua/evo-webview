@@ -260,14 +260,15 @@ void cocoa_wkwebview_engine::on_application_did_finish_launching(
 
   // Main window
   if (!m_parent_window) {
-    m_window = objc::msg_send<id>("NSWindow"_cls, "alloc"_sel);
+    NSRect frame = NSMakeRect(0, 0, 0, 0);
     auto style = NSWindowStyleMaskTitled;
-    m_window = objc::msg_send<id>(
-        m_window, "initWithContentRect:styleMask:backing:defer:"_sel,
-        CGRectMake(0, 0, 0, 0), style, NSBackingStoreBuffered, NO);
-  } else {
+    m_window = [[[NSWindow alloc] initWithContentRect:frame
+                                            styleMask:style
+                                              backing:NSBackingStoreBuffered
+                                                defer:NO]
+        autorelease]; // TBD autorelease useful or not?
+  } else
     m_window = (id)m_parent_window;
-  }
 
   // Webview
   id config = objc::msg_send<id>("WKWebViewConfiguration"_cls, "new"_sel);
