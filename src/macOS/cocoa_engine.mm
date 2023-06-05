@@ -23,8 +23,8 @@ using dispatch_fn_t = std::function<void()>;
 
 cocoa_wkwebview_engine::cocoa_wkwebview_engine(bool debug, void *window)
     : m_debug{debug}, m_parent_window{window} {
-  auto app = get_shared_application();
-  auto delegate = create_app_delegate();
+  id app = get_shared_application();
+  id delegate = create_app_delegate();
   objc_setAssociatedObject(delegate, "webview", (id)this,
                            OBJC_ASSOCIATION_ASSIGN);
   objc::msg_send<void>(app, "setDelegate:"_sel, delegate);
@@ -43,11 +43,11 @@ cocoa_wkwebview_engine::cocoa_wkwebview_engine(bool debug, void *window)
 }
 void *cocoa_wkwebview_engine::window() { return (void *)m_window; }
 void cocoa_wkwebview_engine::terminate() {
-  auto app = get_shared_application();
+  id app = get_shared_application();
   objc::msg_send<void>(app, "terminate:"_sel, nullptr);
 }
 void cocoa_wkwebview_engine::run() {
-  auto app = get_shared_application();
+  id app = get_shared_application();
   objc::msg_send<void>(app, "run"_sel);
 }
 void cocoa_wkwebview_engine::dispatch(std::function<void()> f) {
@@ -86,10 +86,10 @@ void cocoa_wkwebview_engine::set_size(int width, int height, int hints) {
   objc::msg_send<void>(m_window, "center"_sel);
 }
 void cocoa_wkwebview_engine::navigate(const std::string &url) {
-  auto nsurl = objc::msg_send<id>(
-      "NSURL"_cls, "URLWithString:"_sel,
-      objc::msg_send<id>("NSString"_cls, "stringWithUTF8String:"_sel,
-                         url.c_str()));
+  id nsurl = objc::msg_send<id>("NSURL"_cls, "URLWithString:"_sel,
+                                objc::msg_send<id>("NSString"_cls,
+                                                   "stringWithUTF8String:"_sel,
+                                                   url.c_str()));
 
   objc::msg_send<void>(
       m_webview, "loadRequest:"_sel,
@@ -138,7 +138,7 @@ id cocoa_wkwebview_engine::create_app_delegate() {
   if (!m_parent_window) {
     class_addMethod(cls, "applicationDidFinishLaunching:"_sel,
                     (IMP)(+[](id self, SEL, id notification) {
-                      auto app = objc::msg_send<id>(notification, "object"_sel);
+                      id app = objc::msg_send<id>(notification, "object"_sel);
                       auto w = get_associated_webview(self);
                       w->on_application_did_finish_launching(self, app);
                     }),
@@ -159,7 +159,7 @@ id cocoa_wkwebview_engine::create_script_message_handler() {
                   }),
                   "v@:@@");
   objc_registerClassPair(cls);
-  auto instance = objc::msg_send<id>((id)cls, "new"_sel);
+  id instance = objc::msg_send<id>((id)cls, "new"_sel);
   objc_setAssociatedObject(instance, "webview", (id)this,
                            OBJC_ASSOCIATION_ASSIGN);
   return instance;
@@ -178,7 +178,7 @@ id cocoa_wkwebview_engine::create_webkit_ui_delegate() {
             objc::msg_send<BOOL>(parameters, "allowsDirectories"_sel);
 
         // Show a panel for selecting files.
-        auto panel = objc::msg_send<id>("NSOpenPanel"_cls, "openPanel"_sel);
+        id panel = objc::msg_send<id>("NSOpenPanel"_cls, "openPanel"_sel);
         objc::msg_send<void>(panel, "setCanChooseFiles:"_sel, YES);
         objc::msg_send<void>(panel, "setCanChooseDirectories:"_sel,
                              allows_directories);
@@ -195,9 +195,9 @@ id cocoa_wkwebview_engine::create_webkit_ui_delegate() {
                       : nullptr;
 
         // Invoke the completion handler block.
-        auto sig = objc::msg_send<id>("NSMethodSignature"_cls,
-                                      "signatureWithObjCTypes:"_sel, "v@?@");
-        auto invocation = objc::msg_send<id>(
+        id sig = objc::msg_send<id>("NSMethodSignature"_cls,
+                                    "signatureWithObjCTypes:"_sel, "v@?@");
+        id invocation = objc::msg_send<id>(
             "NSInvocation"_cls, "invocationWithMethodSignature:"_sel, sig);
         objc::msg_send<void>(invocation, "setTarget:"_sel, completion_handler);
         objc::msg_send<void>(invocation, "setArgument:atIndex:"_sel, &urls, 1);
@@ -221,11 +221,11 @@ id cocoa_wkwebview_engine::get_main_bundle() noexcept {
   return objc::msg_send<id>("NSBundle"_cls, "mainBundle"_sel);
 }
 bool cocoa_wkwebview_engine::is_app_bundled() noexcept {
-  auto bundle = get_main_bundle();
+  id bundle = get_main_bundle();
   if (!bundle) {
     return false;
   }
-  auto bundle_path = objc::msg_send<id>(bundle, "bundlePath"_sel);
+  id bundle_path = objc::msg_send<id>(bundle, "bundlePath"_sel);
   auto bundled =
       objc::msg_send<BOOL>(bundle_path, "hasSuffix:"_sel, ".app"_str);
   return !!bundled;
@@ -269,7 +269,7 @@ void cocoa_wkwebview_engine::on_application_did_finish_launching(
   }
 
   // Webview
-  auto config = objc::msg_send<id>("WKWebViewConfiguration"_cls, "new"_sel);
+  id config = objc::msg_send<id>("WKWebViewConfiguration"_cls, "new"_sel);
   m_manager = objc::msg_send<id>(config, "userContentController"_sel);
   m_webview = objc::msg_send<id>("WKWebView"_cls, "alloc"_sel);
 
@@ -303,11 +303,11 @@ void cocoa_wkwebview_engine::on_application_did_finish_launching(
       objc::msg_send<id>("NSNumber"_cls, "numberWithBool:"_sel, YES),
       "DOMPasteAllowed"_str);
 
-  auto ui_delegate = create_webkit_ui_delegate();
+  id ui_delegate = create_webkit_ui_delegate();
   objc::msg_send<void>(m_webview, "initWithFrame:configuration:"_sel,
                        CGRectMake(0, 0, 0, 0), config);
   objc::msg_send<void>(m_webview, "setUIDelegate:"_sel, ui_delegate);
-  auto script_message_handler = create_script_message_handler();
+  id script_message_handler = create_script_message_handler();
   objc::msg_send<void>(m_manager, "addScriptMessageHandler:name:"_sel,
                        script_message_handler, "external"_str);
 
