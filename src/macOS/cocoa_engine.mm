@@ -115,11 +115,12 @@ void cocoa_wkwebview_engine::init(const std::string &js) {
   [m_manager addUserScript:userScript];
 }
 void cocoa_wkwebview_engine::eval(const std::string &js) {
-  objc::msg_send<void>(m_webview, "evaluateJavaScript:completionHandler:"_sel,
-                       objc::msg_send<id>("NSString"_cls,
-                                          "stringWithUTF8String:"_sel,
-                                          js.c_str()),
-                       nullptr);
+  NSString *jsString = [NSString stringWithUTF8String:js.c_str()];
+
+  [m_webview evaluateJavaScript:jsString
+              completionHandler:^(id result, NSError *error){
+                  // Handle result or error here, if needed?
+              }];
 }
 
 id cocoa_wkwebview_engine::create_app_delegate() {
