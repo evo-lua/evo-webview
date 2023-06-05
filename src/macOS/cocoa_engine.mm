@@ -8,7 +8,9 @@
 // ====================================================================
 //
 
-#include <CoreGraphics/CoreGraphics.h>
+#include <AppKit/AppKit.h>
+#include <CoreGraphics/CoreGraphics.h> // tbd can remove?
+#include <WebKit/WebKit.h>
 #include <objc/NSObjCRuntime.h>
 #include <objc/objc-runtime.h>
 
