@@ -89,8 +89,7 @@ void cocoa_wkwebview_engine::set_size(int width, int height, int hints) {
 }
 void cocoa_wkwebview_engine::navigate(const std::string &url) {
   NSString *urlString = [NSString stringWithUTF8String:url.c_str()];
-  NSURL *urlObject = [NSURL URLWithString:urlString]; // tbd id?
-
+  NSURL *urlObject = [NSURL URLWithString:urlString];
   NSURLRequest *request = [NSURLRequest requestWithURL:urlObject];
   [(WKWebView *)m_webview loadRequest:request];
 }
