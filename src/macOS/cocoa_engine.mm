@@ -220,7 +220,7 @@ cocoa_wkwebview_engine::get_associated_webview(id object) {
   return w;
 }
 id cocoa_wkwebview_engine::get_main_bundle() noexcept {
-  return objc::msg_send<id>("NSBundle"_cls, "mainBundle"_sel);
+  return [NSBundle mainBundle];
 }
 bool cocoa_wkwebview_engine::is_app_bundled() noexcept {
   NSBundle *bundle = get_main_bundle();
