@@ -275,9 +275,8 @@ void cocoa_wkwebview_engine::on_application_did_finish_launching(
   m_manager = [config userContentController];
   m_webview = [WKWebView alloc];
 
-  if (m_debug) {
+  if (m_debug)
     [[config preferences] setValue:@YES forKey:@"developerExtrasEnabled"];
-  }
   [[config preferences] setValue:@YES forKey:@"fullScreenEnabled"];
   [[config preferences] setValue:@YES forKey:@"javaScriptCanAccessClipboard"];
   [[config preferences] setValue:@YES forKey:@"DOMPasteAllowed"];
